@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deterministic AI Engine Tests | AI-Based Intelligent Mobility Platform</title>
+  <meta name="description" content="Automated unit test runner for the deterministic client-side AI travel advisory logic engine.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6.4.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <!-- Shared Navbar -->
+  <nav class="site-navbar" role="navigation" aria-label="Main Navigation">
+    <div class="container navbar-container">
+      <a href="index.html" class="brand-link" aria-label="AI Mobility Platform Home">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-route"></i>
+        </div>
+        <span>AI Mobility<span class="brand-badge">Engine Tests</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="planner.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="about.html" class="nav-link">Architecture &amp; APIs</a></li>
+        <li><a href="tests.html" class="nav-link active">Engine Tests</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Toggle dark/light theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+        <a href="planner.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-compass"></i> Launch Planner
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Tests Dashboard Content -->
+  <main class="container tests-dashboard">
+    <div class="tests-header-card">
+      <div>
+        <span class="section-tag">Quality Assurance &amp; Verification</span>
+        <h1 style="font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em;">Deterministic Logic Engine Test Runner</h1>
+        <p class="text-muted" style="margin-top: 0.35rem; font-size: 0.9rem;">
+          Executes 10 automated test scenarios verifying risk classification across Optimal, Peak Hour Alert, Caution, and Critical Warning.
+        </p>
+      </div>
+
+      <div class="tests-stats-group">
+        <div class="test-stat">
+          <span id="stat-total" class="test-stat-val">10</span>
+          <span class="test-stat-label">Total Tests</span>
+        </div>
+        <div class="test-stat">
+          <span id="stat-passed" class="test-stat-val" style="color: var(--color-optimal);">0</span>
+          <span class="test-stat-label">Passed</span>
+        </div>
+        <div class="test-stat">
+          <span id="stat-failed" class="test-stat-val" style="color: var(--color-critical);">0</span>
+          <span class="test-stat-label">Failed</span>
+        </div>
+        <button id="btn-run-tests" class="btn btn-primary">
+          <i class="fa-solid fa-play"></i> Re-Run Tests
+        </button>
+      </div>
+    </div>
+
+    <!-- Results List -->
+    <div id="test-results-container" class="test-results-grid">
+      <!-- Injected dynamically by test runner script -->
+    </div>
+  </main>
+
+  <!-- Shared Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-privacy-bar" style="border-top: none; padding-top: 0;">
+        <div class="privacy-badge-note">
+          <i class="fa-solid fa-lock"></i>
+          <span>No registration. No tracking. All processing happens in your browser.</span>
+        </div>
+        <div>
+          &copy; 2026 AI Mobility Platform. Deterministic test runner.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { runTestSuite } from './js/tests.js';
+
+    function executeAndRender() {
+      const suiteResult = runTestSuite();
+      
+      document.getElementById('stat-total').textContent = suiteResult.total;
+      document.getElementById('stat-passed').textContent = suiteResult.passed;
+      document.getElementById('stat-failed').textContent = suiteResult.failed;
+
+      const container = document.getElementById('test-results-container');
+      container.innerHTML = '';
+
+      suiteResult.results.forEach((res) => {
+        const card = document.createElement('article');
+        card.className = `test-case-card ${res.passed ? 'pass' : 'fail'}`;
+
+        const badgeClass = res.actualLevel.toLowerCase().replace(/\s+/g, '-');
+
+        card.innerHTML = `
+          <div class="test-case-header">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">${res.id}</span>
+              <h3 class="test-case-title">${res.name}</h3>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span class="advisory-badge badge-${badgeClass}">${res.actualLevel}</span>
+              <span class="tag-badge" style="background-color: ${res.passed ? 'var(--color-optimal-bg)' : 'var(--color-critical-bg)'}; color: ${res.passed ? 'var(--color-optimal)' : 'var(--color-critical)'}; font-weight: 700;">
+                <i class="fa-solid ${res.passed ? 'fa-check' : 'fa-xmark'}"></i> ${res.passed ? 'PASS' : 'FAIL'}
+              </span>
+            </div>
+          </div>
+          
+          <div class="test-case-meta">
+            <div><strong>Duration:</strong> ${res.params.durationMin} min (${res.params.distanceKm} km)</div>
+            <div><strong>Departure Time:</strong> ${res.params.departureDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} (${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][res.params.departureDate.getDay()]})</div>
+            <div><strong>Weather:</strong> ${res.params.weather ? `${res.params.weather.condition} (${res.params.weather.temp}°C, ${res.params.weather.windSpeed}m/s)` : 'None'}</div>
+            <div><strong>Score:</strong> <span style="font-family: var(--font-mono); font-weight: 700;">${res.actualScore} / 100</span> (Expected [${res.expectedScoreRange.join(' - ')}])</div>
+            <div><strong>Breakdown:</strong> Temporal: +${res.breakdown.temporal} | Weather: +${res.breakdown.weather} | Route: +${res.breakdown.route}</div>
+            <div><strong>Execution:</strong> ${res.durationMs} ms</div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      console.log(`[AI Engine Tests] Executed ${suiteResult.total} tests: ${suiteResult.passed} Passed, ${suiteResult.failed} Failed.`);
+    }
+
+    document.getElementById('btn-run-tests').addEventListener('click', executeAndRender);
+    document.addEventListener('DOMContentLoaded', executeAndRender);
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
