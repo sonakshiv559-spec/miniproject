@@ -1,0 +1,22 @@
+{
+  "name": "ai-intelligent-mobility-platform",
+  "version": "1.0.0",
+  "description": "Zero-cost, serverless, client-side web application for urban commute planning with deterministic AI travel advisories.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node -e \"import('./js/tests.js').then(m => { const r = m.runTestSuite(); console.log('Passed ' + r.passed + '/' + r.total); if (!r.allPassed) process.exit(1); })\""
+  },
+  "keywords": [
+    "mobility",
+    "urban-transit",
+    "leaflet",
+    "routing",
+    "weather",
+    "parking",
+    "explainable-ai"
+  ],
+  "author": "Senior Front-End Engineering Team",
+  "license": "MIT"
+}

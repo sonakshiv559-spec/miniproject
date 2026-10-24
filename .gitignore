@@ -1,0 +1,13 @@
+# Local configuration containing user API keys
+js/config.js
+
+# Dependencies
+node_modules/
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.log
+.vscode/
+.idea/
