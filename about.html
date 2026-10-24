@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture &amp; APIs | AI-Based Intelligent Mobility Platform</title>
+  <meta name="description" content="Technical architecture, APIs, data flow, and deterministic AI engine design for the AI-Based Intelligent Mobility Platform.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6.4.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <!-- Shared Navbar -->
+  <nav class="site-navbar" role="navigation" aria-label="Main Navigation">
+    <div class="container navbar-container">
+      <a href="index.html" class="brand-link" aria-label="AI Mobility Platform Home">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-route"></i>
+        </div>
+        <span>AI Mobility<span class="brand-badge">Architecture</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="planner.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="about.html" class="nav-link active">Architecture &amp; APIs</a></li>
+        <li><a href="tests.html" class="nav-link">Engine Tests</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Toggle dark/light theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+        <a href="planner.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-compass"></i> Launch Planner
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- About Main Content -->
+  <main class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+    
+    <header class="about-hero">
+      <span class="section-tag">System Design &amp; Methodology</span>
+      <h1 class="section-title">Technical Architecture</h1>
+      <p class="hero-subtitle">
+        A zero-cost, serverless, modular front-end application built strictly with vanilla standards (HTML5, CSS3, ES6+ modules) and explainable deterministic decision models.
+      </p>
+    </header>
+
+    <!-- Architecture Card with SVG Diagram -->
+    <section class="about-content-card">
+      <h3><i class="fa-solid fa-sitemap" style="color: var(--accent-primary);"></i> End-to-End System Architecture</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+        The application operates entirely within the user's web browser. All external communication is initiated via standard asynchronous HTTP <code>fetch()</code> requests wrapped with 10-second <code>AbortController</code> timeouts and resilient fallback cascades.
+      </p>
+
+      <!-- Clean SVG Architecture Diagram -->
+      <div class="arch-diagram-wrapper">
+        <svg viewBox="0 0 920 480" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="max-width: 900px; font-family: var(--font-sans);">
+          <defs>
+            <linearGradient id="gradBrand" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0284c7" />
+              <stop offset="100%" stop-color="#0369a1" />
+            </linearGradient>
+            <linearGradient id="gradAi" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#10b981" />
+              <stop offset="100%" stop-color="#059669" />
+            </linearGradient>
+            <filter id="dropGlow" x="-10%" y="-10%" width="120%" height="120%">
+              <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0284c7" flood-opacity="0.25" />
+            </filter>
+            <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+            </marker>
+          </defs>
+
+          <!-- Outer Browser Boundary -->
+          <rect x="20" y="20" width="880" height="440" rx="16" fill="var(--bg-surface)" stroke="var(--border-medium)" stroke-width="2" stroke-dasharray="6,4" />
+          <text x="40" y="50" fill="var(--text-muted)" font-size="13" font-weight="700" letter-spacing="1">CLIENT BROWSER SANDBOX (ZERO BACKEND / ZERO PERSISTENCE)</text>
+
+          <!-- 1. User Input Box -->
+          <rect x="50" y="80" width="220" height="110" rx="10" fill="var(--bg-primary)" stroke="var(--border-light)" stroke-width="1.5" />
+          <text x="70" y="115" fill="var(--text-primary)" font-size="15" font-weight="700">User Interface &amp; Input</text>
+          <text x="70" y="140" fill="var(--text-secondary)" font-size="12">&bull; Debounced Autocomplete</text>
+          <text x="70" y="160" fill="var(--text-secondary)" font-size="12">&bull; Geolocation (HTML5 GPS)</text>
+
+          <!-- Arrow: UI -> Nominatim -->
+          <line x1="270" y1="135" x2="330" y2="135" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+
+          <!-- 2. Geocoding Service -->
+          <rect x="340" y="80" width="220" height="110" rx="10" fill="var(--bg-primary)" stroke="var(--border-light)" stroke-width="1.5" />
+          <text x="360" y="115" fill="var(--text-primary)" font-size="15" font-weight="700">OSM Nominatim API</text>
+          <text x="360" y="140" fill="var(--text-secondary)" font-size="12">&bull; In-Memory Cache (RAM)</text>
+          <text x="360" y="160" fill="var(--text-secondary)" font-size="12">&bull; Rate Limiter (1 req/sec)</text>
+
+          <!-- Arrow: Nominatim -> Concurrent API Dispatcher -->
+          <line x1="560" y1="135" x2="620" y2="135" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+
+          <!-- 3. Parallel API Fetching Node -->
+          <rect x="630" y="80" width="230" height="190" rx="10" fill="var(--bg-primary)" stroke="var(--border-light)" stroke-width="1.5" />
+          <text x="650" y="115" fill="var(--text-primary)" font-size="15" font-weight="700">Concurrent API Layer</text>
+          <text x="650" y="145" fill="#38bdf8" font-size="12" font-weight="600">1. Routing Service</text>
+          <text x="665" y="165" fill="var(--text-muted)" font-size="11">OpenRouteService &bull; OSRM</text>
+          <text x="650" y="195" fill="#f59e0b" font-size="12" font-weight="600">2. Weather Service</text>
+          <text x="665" y="215" fill="var(--text-muted)" font-size="11">OpenWeatherMap &bull; Open-Meteo</text>
+          <text x="650" y="245" fill="#10b981" font-size="12" font-weight="600">3. Overpass 2 km Parking</text>
+
+          <!-- Arrow down from Concurrent APIs to AI Engine -->
+          <line x1="745" y1="270" x2="745" y2="330" stroke="#38bdf8" stroke-width="2" />
+          <line x1="745" y1="330" x2="570" y2="330" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+
+          <!-- 4. Deterministic AI Engine -->
+          <rect x="330" y="270" width="230" height="120" rx="12" fill="url(#gradAi)" filter="url(#dropGlow)" />
+          <text x="350" y="305" fill="#ffffff" font-size="16" font-weight="800">Deterministic AI Engine</text>
+          <text x="350" y="330" fill="#f0fdf4" font-size="12">&bull; Peak Rush Hour Classifier</text>
+          <text x="350" y="350" fill="#f0fdf4" font-size="12">&bull; Weather Hazard Matrix</text>
+          <text x="350" y="370" fill="#f0fdf4" font-size="12">&bull; 0–100 Risk Score Engine</text>
+
+          <!-- Arrow: AI Engine -> Leaflet & Reactive DOM -->
+          <line x1="330" y1="330" x2="270" y2="330" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+
+          <!-- 5. Interactive Output -->
+          <rect x="50" y="270" width="210" height="120" rx="10" fill="var(--bg-primary)" stroke="var(--border-light)" stroke-width="1.5" />
+          <text x="70" y="305" fill="var(--text-primary)" font-size="15" font-weight="700">Presentation Layer</text>
+          <text x="70" y="330" fill="var(--text-secondary)" font-size="12">&bull; Leaflet Map &amp; CartoDB</text>
+          <text x="70" y="350" fill="var(--text-secondary)" font-size="12">&bull; 4-Level Color Advisories</text>
+          <text x="70" y="370" fill="var(--text-secondary)" font-size="12">&bull; Interactive Parking Pins</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- APIs Integrated Table -->
+    <section class="about-content-card">
+      <h3><i class="fa-solid fa-plug" style="color: var(--accent-primary);"></i> Integrated Open APIs</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+        All third-party services utilized operate strictly within their free tiers and public community guidelines.
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Provider</th>
+              <th>Role in Platform</th>
+              <th>Key Required</th>
+              <th>Resilience Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nominatim</strong></td>
+              <td>OpenStreetMap Foundation</td>
+              <td>Forward address search &amp; reverse geocoding</td>
+              <td>No</td>
+              <td>1 req/sec client rate-limiter, 500 ms debounce &amp; in-memory cache</td>
+            </tr>
+            <tr>
+              <td><strong>OpenRouteService</strong></td>
+              <td>HeiGIT / University of Heidelberg</td>
+              <td>Driving-car geometry, distance &amp; turn-by-turn steps</td>
+              <td>Yes (Free tier)</td>
+              <td>Automatic fallback to public OSRM driving engine when key is missing</td>
+            </tr>
+            <tr>
+              <td><strong>OpenWeatherMap</strong></td>
+              <td>OpenWeather Ltd.</td>
+              <td>Destination atmospheric conditions &amp; wind/visibility</td>
+              <td>Yes (Free tier)</td>
+              <td>Automatic fallback to keyless Open-Meteo meteorological API</td>
+            </tr>
+            <tr>
+              <td><strong>Overpass API</strong></td>
+              <td>OpenStreetMap Community</td>
+              <td>2 km destination parking boundary query (<code>amenity=parking</code>)</td>
+              <td>No</td>
+              <td>12s timeout with simulated representative fallback if public server loads</td>
+            </tr>
+            <tr>
+              <td><strong>CartoDB Basemaps</strong></td>
+              <td>CARTO / OpenStreetMap</td>
+              <td>Positron (Light) and Dark Matter (Dark) vector tiles</td>
+              <td>No</td>
+              <td>Dynamic stylesheet switching synchronized with OS theme preference</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Core Objectives & Privacy Model -->
+    <section class="about-content-card">
+      <h3><i class="fa-solid fa-bullseye" style="color: var(--accent-primary);"></i> Project Objectives &amp; Privacy Mandate</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+        <div>
+          <h4 style="font-weight: 700; margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--color-optimal);"></i> Zero-Cost Architecture</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">
+            Entirely serverless and free-tier compliant. Designed to run on static file servers without compute fees or cloud hosting overhead.
+          </p>
+        </div>
+
+        <div>
+          <h4 style="font-weight: 700; margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--color-optimal);"></i> Transparent &amp; Explainable AI</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">
+            Replaces opaque black-box deep learning models with a deterministic, auditable scoring rule set. Commuters always know exactly why an advisory was issued.
+          </p>
+        </div>
+
+        <div>
+          <h4 style="font-weight: 700; margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--color-optimal);"></i> Zero Telemetry Privacy</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">
+            No cookies, tracking scripts, or analytics beacons. GPS coordinates are kept exclusively in memory during the active session.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Shared Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-privacy-bar" style="border-top: none; padding-top: 0;">
+        <div class="privacy-badge-note">
+          <i class="fa-solid fa-lock"></i>
+          <span>No registration. No tracking. All processing happens in your browser.</span>
+        </div>
+        <div>
+          &copy; 2026 AI Mobility Platform. Open-source client-side architecture.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

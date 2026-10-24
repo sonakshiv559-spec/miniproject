@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trip Planner | AI-Based Intelligent Mobility Platform</title>
+  <meta name="description" content="Plan urban driving trips with real-time routing, destination weather, 2 km parking search, and client-side AI travel advisory.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet.js v1.9.4 CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Font Awesome 6.4.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <!-- Shared Navbar -->
+  <nav class="site-navbar" role="navigation" aria-label="Main Navigation">
+    <div class="container navbar-container">
+      <a href="index.html" class="brand-link" aria-label="AI Mobility Platform Home">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-route"></i>
+        </div>
+        <span>AI Mobility<span class="brand-badge">Planner</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="planner.html" class="nav-link active">Trip Planner</a></li>
+        <li><a href="about.html" class="nav-link">Architecture &amp; APIs</a></li>
+        <li><a href="tests.html" class="nav-link">Engine Tests</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Toggle dark/light theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Planner Split Layout -->
+  <div class="planner-layout">
+    
+    <!-- Left Sidebar: Controls & Output Cards -->
+    <aside class="planner-sidebar" aria-label="Trip planning controls and cards">
+      
+      <!-- Top Sticky Controls Pane -->
+      <div class="planner-controls-pane">
+        <div class="planner-title-bar">
+          <h2 style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa-solid fa-compass" style="color: var(--accent-primary);"></i> Journey Planning
+          </h2>
+          <button id="btn-locate" class="btn btn-secondary btn-sm" title="Detect your current location">
+            <i class="fa-solid fa-location-crosshairs"></i> Current
+          </button>
+        </div>
+
+        <form id="route-form" onsubmit="return false;" class="inputs-container">
+          <!-- Origin Input Group -->
+          <div id="source-group" class="input-group">
+            <i class="fa-solid fa-circle-dot input-icon-prefix" style="color: #10b981;" aria-hidden="true"></i>
+            <input 
+              type="text" 
+              id="source-input" 
+              class="form-input" 
+              placeholder="Origin (e.g. Kanpur Central Railway Station)" 
+              autocomplete="off"
+              aria-label="Starting address or landmark"
+              required
+            >
+            <i id="source-spinner" class="fa-solid fa-circle-notch fa-spin input-spinner hidden" aria-hidden="true"></i>
+            <ul id="source-suggestions" class="suggestions-dropdown hidden" role="listbox" aria-label="Origin suggestions"></ul>
+          </div>
+
+          <!-- Swap Button Row -->
+          <div class="input-row-with-swap">
+            <!-- Destination Input Group -->
+            <div id="dest-group" class="input-group">
+              <i class="fa-solid fa-location-dot input-icon-prefix" style="color: #6366f1;" aria-hidden="true"></i>
+              <input 
+                type="text" 
+                id="dest-input" 
+                class="form-input" 
+                placeholder="Destination (e.g. IIT Kanpur)" 
+                autocomplete="off"
+                aria-label="Destination address or landmark"
+                required
+              >
+              <i id="dest-spinner" class="fa-solid fa-circle-notch fa-spin input-spinner hidden" aria-hidden="true"></i>
+              <ul id="dest-suggestions" class="suggestions-dropdown hidden" role="listbox" aria-label="Destination suggestions"></ul>
+            </div>
+
+            <!-- Swap Locations Button -->
+            <button type="button" id="btn-swap" class="btn-swap-locations" aria-label="Swap origin and destination" title="Swap origin & destination">
+              <i class="fa-solid fa-arrow-down-up-across-line"></i>
+            </button>
+          </div>
+
+          <!-- Action Button -->
+          <button type="submit" id="btn-plan" class="btn btn-primary" style="width: 100%; margin-top: 0.35rem;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Plan Journey
+          </button>
+        </form>
+
+        <!-- Demo pills -->
+        <div class="demo-pills-row">
+          <span class="demo-pill-label">Sample Route:</span>
+          <button type="button" class="btn-demo-pill" data-demo-route="kanpur">
+            <i class="fa-solid fa-bolt"></i> Kanpur Central &rarr; IIT Kanpur
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Output Panels & Cards -->
+      <div class="planner-scroll-content">
+
+        <!-- 1. Empty State Placeholder -->
+        <div id="empty-state" class="empty-planner-state">
+          <i class="fa-solid fa-map-location-dot empty-state-icon"></i>
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem;">Ready to Plan Your Commute</h3>
+          <p style="font-size: 0.85rem;">Enter your origin and destination above or click the sample Kanpur route to generate driving directions, destination weather, parking, and AI advisory.</p>
+        </div>
+
+        <!-- 2. Loading Skeleton State -->
+        <div id="skeleton-state" class="hidden">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <!-- 3. Real Results Container -->
+        <div id="results-container" class="hidden" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          
+          <!-- Card A: Route Summary -->
+          <section id="route-card" class="dashboard-card" aria-label="Route summary">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-solid fa-car-side"></i> Driving Route
+              </h3>
+              <span id="route-provider-badge" class="provider-badge provider-live">ORS Live</span>
+            </div>
+
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <span class="metric-label">Total Distance</span>
+                <span id="route-distance" class="metric-value">--</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Estimated Time</span>
+                <span id="route-duration" class="metric-value">--</span>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+              <span><i class="fa-solid fa-clock"></i> Departure: <strong id="route-departure">--:--</strong></span>
+              <span><i class="fa-solid fa-flag-checkered"></i> Est. Arrival: <strong id="route-arrival">--:--</strong></span>
+            </div>
+
+            <button type="button" id="btn-toggle-steps" class="btn btn-secondary btn-sm" style="width: 100%;">
+              <i class="fa-solid fa-chevron-down"></i> View Turn-by-Turn Steps
+            </button>
+            <ul id="route-steps-list" class="steps-list hidden"></ul>
+          </section>
+
+          <!-- Card B: Destination Weather -->
+          <section id="weather-card" class="dashboard-card" aria-label="Destination weather">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-solid fa-cloud-sun-rain"></i> Destination Weather
+              </h3>
+              <span id="weather-provider-badge" class="provider-badge provider-live">OWM Live</span>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div id="weather-temp" style="font-size: 2.2rem; font-weight: 800; font-family: var(--font-mono); line-height: 1;">--</div>
+                <div id="weather-desc" style="font-size: 0.9rem; color: var(--text-secondary); text-transform: capitalize; margin-top: 0.35rem;">--</div>
+              </div>
+              <i id="weather-icon" class="fa-solid fa-cloud-sun weather-main-icon" aria-hidden="true"></i>
+            </div>
+
+            <div class="weather-stats-grid">
+              <div class="weather-stat-item">
+                <span>Wind Speed</span>
+                <strong id="weather-wind">--</strong>
+              </div>
+              <div class="weather-stat-item">
+                <span>Humidity</span>
+                <strong id="weather-humidity">--</strong>
+              </div>
+              <div class="weather-stat-item">
+                <span>Visibility</span>
+                <strong id="weather-visibility">--</strong>
+              </div>
+            </div>
+          </section>
+
+          <!-- Card C: Deterministic AI Travel Advisory -->
+          <section id="ai-advisory-card" class="dashboard-card ai-advisory-card" aria-label="AI Travel Advisory">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-solid fa-microchip"></i> AI Travel Advisory
+              </h3>
+              <span id="ai-level-badge" class="advisory-badge badge-optimal">Optimal</span>
+            </div>
+
+            <!-- Score Meter -->
+            <div class="ai-score-container">
+              <div class="ai-score-display">
+                <span id="ai-score-value" class="ai-score-value">0</span>
+                <span class="ai-score-label">Risk Index</span>
+              </div>
+              <div class="ai-score-meter-track" aria-hidden="true">
+                <div id="ai-score-meter-fill" class="ai-score-meter-fill"></div>
+              </div>
+            </div>
+
+            <h4 id="ai-title" class="ai-advisory-header-title">Analyzing Trip...</h4>
+            <p id="ai-message" class="ai-advisory-message">Please wait while the deterministic engine checks peak hours and conditions.</p>
+
+            <!-- Reasons list -->
+            <div class="ai-section-subtitle">Identified Route Factors</div>
+            <ul id="ai-reasons-list" class="ai-list"></ul>
+
+            <!-- Suggestions list -->
+            <div class="ai-section-subtitle">Recommended Actions</div>
+            <ul id="ai-suggestions-list" class="ai-list"></ul>
+
+            <!-- Explainable Logic Toggle -->
+            <button type="button" id="ai-explainer-toggle" class="ai-explainer-toggle">
+              <span><i class="fa-solid fa-calculator"></i> How this advisory is calculated</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </button>
+            <div id="ai-explainer-body" class="ai-explainer-body hidden">
+              <p>The advisory is evaluated in real time using a deterministic zero-cost client-side engine. Risk points are summed across three objective dimensions:</p>
+              <div id="ai-breakdown-details"></div>
+              <p style="margin-top: 0.6rem; font-size: 0.75rem; color: var(--text-muted);">
+                Four strict classifications: <strong>Optimal</strong> (0–24), <strong>Peak Hour Alert</strong> (25–49), <strong>Caution</strong> (50–74), <strong>Critical Warning</strong> (75–100).
+              </p>
+            </div>
+          </section>
+
+          <!-- Card D: Nearby Parking Panel -->
+          <section id="parking-panel" class="dashboard-card" aria-label="Nearby parking facilities">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-solid fa-square-parking"></i> Nearby Parking
+              </h3>
+              <span id="parking-count-badge" class="tag-badge">Within 2 km</span>
+            </div>
+
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.85rem;">
+              Facilities within 2 km of destination sorted by proximity. Hover or click to locate on map:
+            </p>
+
+            <div id="parking-list">
+              <!-- Dynamically rendered parking cards -->
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Side: Interactive Leaflet Map -->
+    <main class="planner-map-container" aria-label="Interactive mobility map">
+      <div id="map" role="region" aria-label="Leaflet driving map"></div>
+    </main>
+
+  </div>
+
+  <!-- Shared Notification Toast Banner Container -->
+  <div id="notification-area" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Shared Footer -->
+  <footer class="site-footer" style="margin-top: 0;">
+    <div class="container">
+      <div class="footer-privacy-bar" style="border-top: none; padding-top: 0;">
+        <div class="privacy-badge-note">
+          <i class="fa-solid fa-lock"></i>
+          <span>No registration. No tracking. All processing happens in your browser.</span>
+        </div>
+        <div>
+          &copy; 2026 AI Mobility Platform. Pure client-side JavaScript architecture.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS v1.9.4 -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Application Bundle -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

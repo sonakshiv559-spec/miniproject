@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Based Intelligent Mobility Platform | Smart Urban Commute Planning</title>
+  <meta name="description" content="A zero-cost, serverless, client-side intelligent urban mobility platform. Route planning, destination weather, 2 km parking discovery, and explainable AI travel advisories.">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6.4.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <!-- Shared Navbar -->
+  <nav class="site-navbar" role="navigation" aria-label="Main Navigation">
+    <div class="container navbar-container">
+      <a href="index.html" class="brand-link" aria-label="AI Mobility Platform Home">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-route"></i>
+        </div>
+        <span>AI Mobility<span class="brand-badge">MVP</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="planner.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="about.html" class="nav-link">Architecture &amp; APIs</a></li>
+        <li><a href="tests.html" class="nav-link">Engine Tests</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Toggle dark/light theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+        <a href="planner.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-compass"></i> Launch Planner
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container hero-content">
+      <div class="hero-pill-badge">
+        <i class="fa-solid fa-shield-halved"></i> 100% Client-Side &bull; Zero Backend &bull; Privacy First
+      </div>
+
+      <h1 class="hero-title">
+        Intelligent Urban Commutes,<br>
+        <span class="text-gradient">Powered by Explainable AI</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Plan smarter city trips with unified real-time driving routes, live destination weather, 
+        instant 2 km parking discovery, and a deterministic travel risk engine.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="planner.html" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1.05rem;">
+          <i class="fa-solid fa-paper-plane"></i> Plan Your Route Now
+        </a>
+        <a href="planner.html?demo=1" class="btn btn-secondary" style="padding: 0.85rem 1.75rem;">
+          <i class="fa-solid fa-bolt"></i> Run Kanpur Demo Route
+        </a>
+      </div>
+
+      <!-- Highlights Strip -->
+      <div class="hero-highlights-strip">
+        <div class="highlight-item">
+          <div class="highlight-icon">
+            <i class="fa-solid fa-microchip"></i>
+          </div>
+          <div>
+            <div class="highlight-title">Deterministic AI</div>
+            <div class="highlight-desc">Explainable 0–100 risk scoring</div>
+          </div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-icon">
+            <i class="fa-solid fa-cloud-sun"></i>
+          </div>
+          <div>
+            <div class="highlight-title">Live Weather</div>
+            <div class="highlight-desc">Precipitation &amp; visibility alerts</div>
+          </div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-icon">
+            <i class="fa-solid fa-square-parking"></i>
+          </div>
+          <div>
+            <div class="highlight-title">2 km Parking Radar</div>
+            <div class="highlight-desc">OSM Overpass tagged lots</div>
+          </div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-icon">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div>
+            <div class="highlight-title">No User Tracking</div>
+            <div class="highlight-desc">Zero telemetry, in-memory only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Grid -->
+  <main class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Integrated Mobility Intelligence</span>
+        <h2 class="section-title">Engineered for Urban Commuters</h2>
+        <p class="text-muted">A modern client-side architecture unifying open-source geospatial standards into one frictionless dashboard.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <article class="feature-card">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <h3 class="feature-title">High-Fidelity Routing</h3>
+          <p class="feature-description">
+            OpenRouteService and OSRM integration computes optimal driving routes with turn-by-turn guidance, distance (km), and arrival estimates.
+          </p>
+        </article>
+
+        <!-- Feature 2 -->
+        <article class="feature-card">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <h3 class="feature-title">Explainable AI Advisory</h3>
+          <p class="feature-description">
+            A pure client-side deterministic logic engine synthesizes morning/evening peak rush windows, road duration, and weather severity into actionable guidance.
+          </p>
+        </article>
+
+        <!-- Feature 3 -->
+        <article class="feature-card">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-square-parking"></i>
+          </div>
+          <h3 class="feature-title">2 km Destination Parking</h3>
+          <p class="feature-description">
+            Overpass API scans OpenStreetMap nodes and ways within 2 km of your destination, surfacing surface lots, underground garages, capacity, and fee tags.
+          </p>
+        </article>
+
+        <!-- Feature 4 -->
+        <article class="feature-card">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-cloud-bolt"></i>
+          </div>
+          <h3 class="feature-title">Destination Weather</h3>
+          <p class="feature-description">
+            Real-time atmospheric analysis with temperature, humidity, wind gusts, and visibility thresholds warning you about impending road friction.
+          </p>
+        </article>
+
+        <!-- Feature 5 -->
+        <article class="feature-card">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <h3 class="feature-title">Adaptive Map Layers</h3>
+          <p class="feature-description">
+            CartoDB Positron &amp; Dark Matter basemaps toggle seamlessly with your preferred light or dark operating system color scheme.
+          </p>
+        </article>
+
+        <!-- Feature 6 -->
+        <article class="feature-card">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3 class="feature-title">Zero Data Footprint</h3>
+          <p class="feature-description">
+            No database, no user accounts, and no persistent location storage. Nominatim queries are cached purely in active RAM.
+          </p>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <!-- Shared Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+            <i class="fa-solid fa-route" style="color: var(--accent-primary);"></i>
+            <span>AI-Based Intelligent Mobility Platform</span>
+          </div>
+          <p class="footer-tagline">Client-side urban mobility assistant for resilient daily commuting.</p>
+        </div>
+
+        <ul class="footer-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="planner.html">Trip Planner</a></li>
+          <li><a href="about.html">Architecture</a></li>
+          <li><a href="tests.html">Engine Tests</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-privacy-bar">
+        <div class="privacy-badge-note">
+          <i class="fa-solid fa-lock"></i>
+          <span>No registration. No tracking. All processing happens in your browser.</span>
+        </div>
+        <div>
+          &copy; 2026 AI Mobility Platform. Open-source client-side architecture.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
